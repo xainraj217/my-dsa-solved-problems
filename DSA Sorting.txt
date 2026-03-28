@@ -1,0 +1,30 @@
+//WAP to find a value in the Array using Binary Search.
+
+#include <iostream>
+using namespace std;
+
+int main()
+{
+    int n=6;
+    int arr[n]={1,2,5,9,16,20};
+    int left=0,right=n-1;
+    int key=16;
+    bool found=false;
+    while(left<=right)
+    {
+        int mid=left+(right-left)/2;
+        if(arr[mid]==key)
+        {
+            found=true;
+            cout<<mid<<" index has the value: "<<key<<endl;
+            break;
+        }
+        if(arr[mid]<key)
+            left=mid+1;
+        if(arr[mid]>key)
+            right=mid-1;
+    }
+    if(!found)
+        cout<<"Not in the List";
+
+}
