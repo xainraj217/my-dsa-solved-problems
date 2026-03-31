@@ -1,0 +1,152 @@
+/ Linked List Insertion, Deletion, Traversing
+
+#include <iostream>
+using namespace std;
+
+class Node {
+public:
+    int val;
+    Node* next;
+
+    Node(int val) {
+        this->val = val;
+        this->next = nullptr;
+    }
+};
+
+class GetOperations {
+private:
+    Node* head;
+    Node* tail;
+    int size;
+
+public:
+    GetOperations() {
+        head = nullptr;
+        tail = nullptr;
+        size = 0;
+    }
+
+    void AddBack(int val) {
+        Node* temp = new Node(val);
+        if (head == nullptr) {
+            head = tail = temp;
+        } else {
+            tail->next = temp;
+            tail = temp;
+        }
+        size++;
+    }
+
+    void AddFront(int val) {
+        Node* temp = new Node(val);
+        if (head == nullptr) {
+            head = tail = temp;
+        } else {
+            temp->next = head;
+            head = temp;
+        }
+        size++;
+    }
+
+    void Insertion(int idx, int val) {
+        if (idx == 0) {
+            AddFront(val);
+            return;
+        }
+        if (idx == size) {
+            AddBack(val);
+            return;
+        }
+        if (idx > size) {
+            cout << "Invalid Index." << endl;
+            return;
+        }
+
+        Node* trav = head;
+        Node* temp = new Node(val);
+        for (int i = 1; i <= idx - 1; i++) {
+            trav = trav->next;
+        }
+        temp->next = trav->next;
+        trav->next = temp;
+        size++;
+    }
+
+    void Deletion(int idx) {
+        if (head == nullptr) {
+            cout << "No Items to be deleted." << endl;
+            return;
+        }
+        if (idx >= size) {
+            cout << "Invalid Index." << endl;
+            return;
+        }
+        if (idx == 0) {
+            Node* temp = head;
+            head = head->next;
+            delete temp;
+            size--;
+            if (head == nullptr) {
+                tail = nullptr;
+            }
+            return;
+        }
+        if (idx == size - 1) {
+            Node* trav = head;
+            for (int i = 1; i <= idx - 1; i++) {
+                trav = trav->next;
+            }
+            delete tail;
+            trav->next = nullptr;
+            tail = trav;
+            size--;
+            return;
+        }
+        Node* trav = head;
+        for (int i = 1; i <= idx - 1; i++) {
+            trav = trav->next;
+        }
+        Node* temp = trav->next;
+        trav->next = trav->next->next;
+        delete temp;
+        size--;
+    }
+
+    void Display() {
+        Node* dis = head;
+        while (dis != nullptr) {
+            cout << dis->val << " ";
+            dis = dis->next;
+        }
+        cout << endl;
+    }
+
+    int GetTailValue() {
+        if (tail != nullptr) {
+            return tail->val;
+        }
+        return -1; // Indicating no tail exists
+    }
+};
+
+int main() {
+    GetOperations a;
+    GetOperations b;
+
+    a.AddBack(5);
+    a.AddBack(7);
+    a.AddBack(10);
+    a.Insertion(1, 15); // List: 5, 15, 7, 10
+    a.Display();
+    a.Deletion(3);     // List: 5, 15, 7
+    a.Display();
+    cout << a.GetTailValue() << endl;
+
+    b.AddFront(5);
+    b.AddFront(7);
+    b.AddFront(10); // List: 10, 7, 5
+    b.Display();
+
+    return 0;
+}
